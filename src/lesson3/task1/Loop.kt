@@ -2,7 +2,8 @@
 
 package lesson3.task1
 
-import kotlin.math.sqrt
+import lesson1.task1.sqr
+import kotlin.math.*
 
 /**
  * Пример
@@ -68,17 +69,15 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    var a = 10
     var count = 1
-    for (i in 1..9) {
-        if (n - a >= 0) {
-            a = a * 10
-            count++
-            if (n - a < 0) break
-        }
+    var newNumber = n
+    while (newNumber / 10 != 0) {
+        count++
+        newNumber /= 10
     }
     return count
 }
+
 
 /**
  * Простая
@@ -107,15 +106,30 @@ fun fib(n: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    val a = if (m > n) m else n
+    val b = if (m < n) m else n
+    var k = a
+    while (k % b != 0) {
+        k += a
+    }
+    return k
+}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
-
+fun minDivisor(n: Int): Int {
+    var div = 2
+    if (n % div == 0) return 2
+    div = 3
+    while (n % div != 0) {
+        div += 2
+    }
+    return div
+}
 
 
 /**
@@ -123,7 +137,13 @@ fun minDivisor(n: Int): Int = TODO()
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    var dev = n - 1
+    while (n % dev != 0) {
+        dev -= 1
+    }
+    return dev
+}
 
 /**
  * Простая
@@ -132,7 +152,20 @@ fun maxDivisor(n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    val a = if (m > n) m else n
+    val b = if (m < n) m else n
+    if (a == 1) {
+        return true
+    }
+    if (a % b == 0) {
+        return false
+    }
+    for (dev in 2..sqrt(b.toDouble()).toInt()) {
+        if (a % dev == 0 && b % dev == 0) return false
+    }
+    return true
+}
 
 /**
  * Простая
@@ -141,7 +174,14 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    var preK = 1
+    for (preK in 1..sqrt(n.toDouble()).toInt()) {
+        if (preK * preK in m..n) return true
+    }
+    return false
+}
+
 
 /**
  * Средняя
@@ -159,7 +199,19 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var a = x
+    var count = 0
+    while (a != 1) {
+        if (a % 2 == 0) {
+            a /= 2
+        } else {
+            a = a * 3 + 1
+        }
+        count++
+    }
+    return count
+}
 
 /**
  * Средняя
@@ -170,7 +222,20 @@ fun collatzSteps(x: Int): Int = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    val x1 = x % (2 * PI)
+    var sum = 0.0
+    var add = x1
+    var rank = 1
+    var sign = 1
+    while (abs(add) >= eps) {
+        sum += add
+        rank += 2
+        sign *= -1
+        add = sign * x1.pow(rank) / factorial(rank)
+    }
+    return sum
+}
 
 /**
  * Средняя
@@ -181,7 +246,22 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    val x1 = x % (2 * PI)
+    var sum = 0.0
+    var add = 1.0
+    var rank = 0
+    var sign = 1
+    while (abs(add) >= eps) {
+        sum += add
+        rank += 2
+        sign *= -1
+        add = sign * x1.pow(rank) / factorial(rank)
+    }
+    return sum
+
+
+}
 
 /**
  * Средняя
@@ -190,7 +270,16 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var i = digitNumber(n)
+    var newN = 0.0
+    var n1 = n
+    for (j in i downTo 1) {
+        newN += (n1 % 10) * 10.0.pow(j - 1)
+        n1 /= 10
+    }
+    return newN.toInt()
+}
 
 /**
  * Средняя
