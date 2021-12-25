@@ -260,7 +260,6 @@ fun cos(x: Double, eps: Double): Double {
     }
     return sum
 
-
 }
 
 /**
@@ -290,7 +289,17 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    var i = digitNumber(n)
+    var newN = 0.0
+    var n1 = n
+    for (j in i downTo 1) {
+        newN += (n1 % 10) * 10.0.pow(j - 1)
+        n1 /= 10
+    }
+    return n == newN.toInt()
+}
+
 
 /**
  * Средняя
@@ -300,7 +309,18 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var n1 = n / 10
+    val lastDigit = n % 10
+    while (n1 > 0) {
+        if (lastDigit != n1 % 10) {
+            return true
+        }
+        n1 /= 10
+    }
+    return false
+}
+
 
 /**
  * Сложная
@@ -311,7 +331,23 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var x = 1
+    var kvadrat1 = 0
+    var i = 0
+    do {
+        kvadrat1 = x * x
+        i += digitNumber(kvadrat1)
+        x++
+    } while (i < n)
+    var digitNumber = i - n + 1
+    var findDigit = kvadrat1
+    while (digitNumber > 1) {
+        findDigit /= 10
+        digitNumber--
+    }
+    return findDigit % 10
+}
 
 /**
  * Сложная
@@ -322,4 +358,20 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var x = 1
+    var fibNumber = 0
+    var i = 0
+    do {
+        fibNumber = fib(x)
+        i += digitNumber(fibNumber)
+        x++
+    } while (i < n)
+    var digitNumber = i - n + 1
+    var findDigit = fibNumber
+    while (digitNumber > 1) {
+        findDigit /= 10
+        digitNumber--
+    }
+    return findDigit % 10
+}
